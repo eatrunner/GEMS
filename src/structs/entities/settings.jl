@@ -118,6 +118,7 @@ h2 = Household(id = 2, individuals = [i1, i2, i3])
     last_infectious::Int16 = -1 # 2 bytes
     contact_sampling_method::ContactSamplingMethod = ContactparameterSampling(0)
     ags::AGS= AGS() # 4 bytes
+    teryt::Int64 = -1
     lon::Float32 = NaN # 4 bytes
     lat::Float32 = NaN # 4 bytes
 
@@ -817,6 +818,7 @@ function settings_from_population(population::Population, global_setting::Bool =
 
         # Create a dictionary to store all individuals with the same setting id
         ids = Dict{Int32, Vector{Individual}}()
+        sizehint!(ids, length(individuals(population)) ÷ 2)
 
         # Iterate over all individuals and add them to the dictionary
         for individual in individuals(population)
@@ -835,6 +837,7 @@ function settings_from_population(population::Population, global_setting::Bool =
         else
             continue
         end
+        sizehint!(settings.settings[stngType], length(ids))
         for (id, members) in ids
             add!(settings, stngType(id=id, individuals=members, contact_sampling_method = default_sampling))
         end

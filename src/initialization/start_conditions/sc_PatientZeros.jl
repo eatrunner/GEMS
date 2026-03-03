@@ -22,14 +22,14 @@ sim = Simulation(population = "MV", start_condition = condition)
 """
 struct PatientZeros <: StartCondition
     pathogen::String
-    ags::Vector{Int64}
+    teryt::Vector{Int64}
 
-    function PatientZeros(;pathogen::String = "", ags::Vector{Int64} = Int64[])
-        isempty(ags) && throw(ArgumentError("At least one ags must be provided!"))
+    function PatientZeros(;pathogen::String = "", teryt::Vector{Int64} = Int64[])
+        isempty(teryt) && throw(ArgumentError("At least one ags must be provided!"))
         length(pathogen) > 0 && @warn "GEMS currently only supports single-pathogen simulations. Specifying a pathogen in PatientZeros will have no effect."
-        AGS.(ags) # try casting to AGS (will throw error if invalid)
+        # teryt.(teryt) # try casting to AGS (will throw error if invalid)
             
-        return new(pathogen, ags)
+        return new(pathogen, teryt)
     end
 end
 Base.show(io::IO, cnd::PatientZeros) = write(io, "PatientZeros(AGS=$(join(cnd.ags, ",")))")
@@ -49,8 +49,8 @@ end
 
 Returns the vector of ags where intial seeds should be planted.
 """
-function ags(patientzeros::PatientZeros)::Vector{Int64}
-    return patientzeros.ags
+function teryt(patientzeros::PatientZeros)::Vector{Int64}
+    return patientzeros.teryt
 end
 
 
@@ -67,19 +67,19 @@ function initialize!(simulation::Simulation, condition::PatientZeros; seed_sampl
 
     # number of individuals to infect
     to_infect = []
-    for a in ags(condition)
+    for a in teryt(condition)
         # Get all individuals in households with the given ags
         inds = []
         for h in settings(simulation, Household)
-            if a == h |> ags |> id
-                inds = push!(inds, individuals(h)...)
+            if a == h |> teryt
+                push!(inds, individuals(h)...)
             end
         end
         if length(inds) == 0
-            error("AGS($a) not in simulation or no individuals found in this region.")
+            error("teryt($a) not in simulation or no individuals found in this region.")
         end
         # Sample one individual from the list of individuals
-        to_infect = push!(to_infect, gems_sample(rng_sample, inds, 1, replace=false) |> Base.first)
+        append!(to_infect, gems_sample(rng_sample, inds, 200, replace=false))
     end
    
     # infect individuals

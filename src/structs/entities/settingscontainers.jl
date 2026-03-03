@@ -325,6 +325,7 @@ function settings_from_jld2!(jld2file::String, cntnr::SettingsContainer, d::Dict
             # Handle the container settings
             else
 
+                sizehint!(cntnr.settings[settingtype], length(settings[settingtypesym]))
                 # Add the container settings from the dataframe
                 for row in eachrow(settings[settingtypesym])
                     push!(cntnr.settings[settingtype], settingtype(contact_sampling_method = default_sampling; row...))

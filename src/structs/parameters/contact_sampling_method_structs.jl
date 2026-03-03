@@ -75,7 +75,7 @@ mutable struct AgeBasedContactSampling <: ContactSamplingMethod
     contact_matrix::ContactMatrix{Float64}
     age_pyramid::Vector{Float64} #it will be computed in sample_contacts method
 
-    function AgeBasedContactSampling(; contactparameter::Float64, contact_matrix_file::String, interval::Int64)
+    function AgeBasedContactSampling(; contactparameter::Float64, interval::Int64, contact_matrix_file::String)
         if contactparameter < 0
             throw(ArgumentError("'contactparameter' is $contactparameter, but the 'contactparameter' has to be non-negative!"))
         end

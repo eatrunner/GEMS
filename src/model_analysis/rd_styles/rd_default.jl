@@ -215,8 +215,8 @@ mutable struct DefaultResultData <: ResultDataStyle
                     "customlogger" => () -> pP |> simulation |> customlogger |> dataframe,
                     "household_attack_rates" => () -> pP |> household_attack_rates,
                     "tick_hosptitalizations" => () -> pP |> hospital_df,
-                    "weekly_county_incidence" => () -> pP |> weekly_county_incidence,
-                    "r0_per_county" => () -> pP |> r0_per_county
+                    # "weekly_county_incidence" => () -> pP |> weekly_county_incidence,
+                    # "r0_per_county" => () -> pP |> r0_per_county
                 )      
         )
 

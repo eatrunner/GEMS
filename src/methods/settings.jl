@@ -1,5 +1,5 @@
 export household, office, schoolclass, municipality, getsetting
-export min_individuals, avg_individuals, max_individuals, min_max_avg_individuals, incidence, get_containers!, get_contained!, individuals, individuals!, ags
+export min_individuals, avg_individuals, max_individuals, min_max_avg_individuals, incidence, get_containers!, get_contained!, individuals, individuals!, ags, teryt
 export geolocation, lat, lon, remove_empty_settings!, present_individuals, present_individuals!, is_open, get_open_contained!, open!, close!
 export sample_individuals
 
@@ -448,6 +448,33 @@ Get the ags of a IndividualSetting.
 """
 function ags(stng::IndividualSetting, simulation::Simulation)::AGS
     return stng |> ags
+end
+
+"""
+    ags(stng::ContainerSetting, sim::Simulation)
+
+Get the ags of a ContainerSetting.
+"""
+function teryt(stng::ContainerSetting, sim::Simulation)::Int64
+    return length(stng.contains) > 0 ? teryt(settings(sim, stng.contains_type)[stng.contains |> Base.first], sim) : -1
+end
+
+"""
+    ags(stng::IndividualSetting)
+
+Get the ags of a IndividualSetting.
+"""
+function teryt(stng::IndividualSetting)::Int64
+    return stng.teryt
+end
+
+"""
+    ags(stng::IndividualSetting, sim::Simulation)
+
+Get the ags of a IndividualSetting.
+"""
+function teryt(stng::IndividualSetting, simulation::Simulation)::Int64
+    return stng |> teryt
 end
 
 

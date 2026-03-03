@@ -27,7 +27,7 @@ docs/site/
 results
 
 # Exclude local test file & datafolder
-localtests.jl
+localtests*.jl
 /localdata/
 
 # Exclude folder for temporary data
